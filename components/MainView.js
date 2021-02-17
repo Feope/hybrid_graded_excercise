@@ -1,8 +1,23 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { View, Text, StyleSheet, Button, TextInput } from 'react-native';
-import TestComponent from './TestComponent';
+import PostingBox from "./PostingBox";
 
+
+var postings = {
+    id: "123b3123gr",
+    title: "Kitchen Table",
+    category: "Furniture",
+    location: "Detroit, USA",
+    image: "string",
+    price: 30,
+    date: "29.01.2021",
+    delivery: "Pickup",
+    contact_information: "Ben Dover, mobile:+358 184534344",
+    image2: "string",
+    image3: "string",
+    image4: "string"
+  }
 
 
 const MainView = (props) => {
@@ -17,9 +32,7 @@ const MainView = (props) => {
                 <Text> This is login maybe </Text>
             </View>
             <View style={styles.container}>
-                <Text>Hello World times 2</Text>
-                <Text style={styles.demo}> {value} </Text>
-                <TestComponent/>
+                <PostingBox infor={postings}/>
                 <Button title="Got to posting" onPress={() => props.navigation.navigate('posting')}/>
                 <StatusBar style="auto" />
             </View>
@@ -36,9 +49,14 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
+        width: "95%",
+        padding: 10,
+        marginTop: 15,
         backgroundColor: 'lightgray',
-        alignItems: 'center',
-        justifyContent: 'center',
+        flexWrap: "wrap",
+        flexDirection: "row",
+        alignItems: 'baseline',
+        justifyContent: 'space-around',
     },
     demo: {
         fontSize: 30,

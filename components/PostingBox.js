@@ -1,18 +1,20 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native'
 
 const PostingBox = (props) => {
     return (
-        <View style={styles.outline}>
-            <Text>{props.infor.title}</Text>
-            <Text>{props.infor.category}</Text>
-            <Text>{props.infor.location}</Text>
-            <Text>{props.infor.image}</Text>
-            <Text>{props.infor.price}</Text>
-            <Text>{props.infor.date}</Text>
-            <Text>{props.infor.delivery}</Text>
-            <Text>{props.infor.contact_information}</Text>
-        </View>
+        <TouchableWithoutFeedback onPress={() => {props.onTouchable(props.infor.id); props.switchScreen()}}>
+            <View style={styles.outline}>
+                <Text>{props.infor.title}</Text>
+                <Text>{props.infor.category}</Text>
+                <Text>{props.infor.location}</Text>
+                <Text>{props.infor.image}</Text>
+                <Text>{props.infor.price}</Text>
+                <Text>{props.infor.date}</Text>
+                <Text>{props.infor.delivery}</Text>
+                <Text>{props.infor.contact_information}</Text>
+            </View>
+        </TouchableWithoutFeedback>
     )
 }
 

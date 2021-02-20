@@ -1,10 +1,10 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 
-export default function Posting() {
+export default function Posting(props) {
     return (
         <View style={styles.container}>
-            <Text>Posting 1{}</Text>
+            <Text>Posting {props.id}</Text>
         </View>
     )
 }

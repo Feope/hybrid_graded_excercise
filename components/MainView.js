@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { Component, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { View, Text, StyleSheet, Button, TextInput } from 'react-native';
 import PostingBox from "./PostingBox";
-
+import { NavigationContainer, StackActions } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import { render } from 'react-dom';
 
 var postings = {
     id: "123b3123gr",
@@ -19,25 +21,23 @@ var postings = {
     image4: "string"
   }
 
+  const MainView = (props) => {
 
-const MainView = (props) => {
-
-    const [value, onChangeText] = React.useState('Searchbar soon?');
-
-    return (
+    let output;
+    output = (
         <View style={styles.base}>
             <View style={styles.header}></View>
             <View style={styles.searchContainer}>
-                <TextInput style={styles.searchbar} onChangeText={text => onChangeText(text)} value={value}/>
+                <TextInput style={styles.searchbar} onChangeText={text => props.onSearch(text)} value={props.lable}/>
                 <Text> This is login maybe </Text>
             </View>
             <View style={styles.container}>
-                <PostingBox infor={postings}/>
-                <Button title="Got to posting" onPress={() => props.navigation.navigate('posting')}/>
+                <PostingBox onTouchable={props.onTouchable} switchScreen={() => props.navigation.navigate('posting')} infor={postings}/>
                 <StatusBar style="auto" />
             </View>
         </View>    
     )
+    return output
 }
 
 const styles = StyleSheet.create({
@@ -80,4 +80,4 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     }
   });
- export default MainView;
+export default MainView;

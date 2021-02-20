@@ -1,10 +1,8 @@
-import React, { Component, useEffect } from 'react';
+import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { View, Text, StyleSheet, Button, TextInput } from 'react-native';
+import { View, Text, StyleSheet, TextInput } from 'react-native';
 import PostingBox from "./PostingBox";
-import { NavigationContainer, StackActions } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
-import { render } from 'react-dom';
+import axios from "axios";
 
 var postings = {
     id: "123b3123gr",
@@ -23,6 +21,8 @@ var postings = {
 
   const MainView = (props) => {
 
+    console.log(props.allPosts)
+
     let output;
     output = (
         <View style={styles.base}>
@@ -32,7 +32,7 @@ var postings = {
                 <Text> This is login maybe </Text>
             </View>
             <View style={styles.container}>
-                <PostingBox onTouchable={props.onTouchable} switchScreen={() => props.navigation.navigate('posting')} infor={postings}/>
+                {props.allPosts.map(content => <PostingBox key={content.id} onTouchable={props.onTouchable} switchScreen={() => props.navigation.navigate('posting')} infor={content} />)}
                 <StatusBar style="auto" />
             </View>
         </View>    

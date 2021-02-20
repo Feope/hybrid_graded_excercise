@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { enableScreens } from 'react-native-screens';
-import { Button, StyleSheet, Text, View } from 'react-native';
-import { NavigationContainer, StackActions } from "@react-navigation/native";
+import {  StyleSheet } from 'react-native';
+import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import MainView from "./components/MainView";
 import Posting from "./components/Posting";
+import axios from "axios";
 
 enableScreens();
 const Stack = createStackNavigator();
@@ -17,6 +18,8 @@ export default class App extends Component{
       lable: "",
       selectedId: "",
       clicked: false,
+      returnedPost: [],
+      allPosts: [],
     }
   }
 
@@ -25,8 +28,23 @@ export default class App extends Component{
   }
 
   onTouchable = (id) =>{
-    this.setState({selectedId: id})
-    console.log(id)
+    axios.get('http://localhost:3000/posting/' + id)
+    .then(res => {
+      this.setState({returnedPost: res.data[0]})
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+  
+  componentDidMount(){
+    axios.get('http://localhost:3000/posting')
+    .then(res => {
+      this.setState({allPosts: res.data})
+    })
+    .catch(function (error) {
+    console.log(error);
+    });
   }
 
   render(){
@@ -35,11 +53,11 @@ export default class App extends Component{
   output=(
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name="mainView" options={{title: ''}}>
-            { props => <MainView {...props} lable={ this.state.lable } onSearch={ this.onSearch } onTouchable={ this.onTouchable }/>}
+          <Stack.Screen name="mainView" options={{title: 'NoBay', headerTitleStyle:{ textAlign: "center"}, headerTintColor: 'blue' }}>
+            { props => <MainView {...props} lable={ this.state.lable } allPosts={ this.state.allPosts } onSearch={ this.onSearch } onTouchable={ this.onTouchable }/>}
           </Stack.Screen>
-          <Stack.Screen name="posting" options={{ title: 'Posting 1', headerTintColor: 'blue', }} >
-            { props => <Posting {...props} id={ this.state.selectedId }/>}
+          <Stack.Screen name="posting" options={{ title: 'Posting', headerTintColor: 'blue', }} >
+            { props => <Posting {...props} data={ this.state.returnedPost }/>}
           </Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>

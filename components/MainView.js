@@ -1,35 +1,76 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { View, Text, StyleSheet, TextInput } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableHighlight, Modal, Alert, Button, TouchableWithoutFeedback } from 'react-native';
 import PostingBox from "./PostingBox";
-import axios from "axios";
-
-var postings = {
-    id: "123b3123gr",
-    title: "Kitchen Table",
-    category: "Furniture",
-    location: "Detroit, USA",
-    image: "string",
-    price: 30,
-    date: "29.01.2021",
-    delivery: "Pickup",
-    contact_information: "Ben Dover, mobile:+358 184534344",
-    image2: "string",
-    image3: "string",
-    image4: "string"
-  }
 
   const MainView = (props) => {
+    const [modalVisible, setModalVisible] = useState(false);
+    const [modalVisible2, setModalVisible2] = useState(false);
 
-    console.log(props.allPosts)
+    let loginText = 'Login'
 
     let output;
     output = (
         <View style={styles.base}>
+            <Modal visible={modalVisible} onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            this.setModalVisible(!modalVisible);
+          }}>
+                <View style={styles.centeredView}>
+                    <View>
+                        <Text>Username</Text>
+                        <TextInput style={styles.searchbar} onChangeText={text => props.onUsername(text)} value={props.username}/>
+                    </View>
+                    <View>
+                        <Text>Password</Text>
+                        <TextInput style={styles.searchbar} onChangeText={text => props.onPassword(text)} value={props.password}/>
+                    </View>
+                    <TouchableHighlight style={styles.login} onPress={() => {setModalVisible(!modalVisible); props.login()}}>
+                       <Text style={styles.white}>{loginText}</Text>
+                    </TouchableHighlight>
+                    <TouchableHighlight onPress={() => {setModalVisible(!modalVisible); props.register() }}>
+                        <Text style={styles.smallBlue}>Register instead</Text>
+                    </TouchableHighlight>
+                </View>
+            </Modal>
+            <Modal visible={modalVisible2} onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            this.setModalVisible(!modalVisible2);
+          }}>
+                <View style={styles.centeredView}>
+                        <Text>title</Text>
+                        <TextInput style={styles.searchbar} onChangeText={text => props.onTitle(text)}/>
+                        <Text>category</Text>
+                        <TextInput style={styles.searchbar} onChangeText={text => props.onCategory(text)}/>
+                        <Text>location</Text>
+                        <TextInput style={styles.searchbar} onChangeText={text => props.onLocation(text)}/>
+                        <Text>price</Text>
+                        <TextInput style={styles.searchbar} onChangeText={text => props.onPrice(text)}/>
+                        <Text>date</Text>
+                        <TextInput style={styles.searchbar} onChangeText={text => props.onDate(text)}/>
+                        <Text>delivery</Text>
+                        <TextInput style={styles.searchbar} onChangeText={text => props.onDelivery(text)}/>
+                        <Text>contact information</Text>
+                        <TextInput style={styles.searchbar} onChangeText={text => props.onContactInformation(text)}/>
+                    <TouchableHighlight style={styles.login} onPress={() => {setModalVisible2(!modalVisible2); props.post()}}>
+                       <Text style={styles.white}>Post</Text>
+                    </TouchableHighlight>
+                    <TouchableHighlight onPress={() => {setModalVisible2(!modalVisible2); props.emptyFile()}}>
+                        <Text style={styles.smallBlue}>Cancel</Text>
+                    </TouchableHighlight>
+                </View>
+            </Modal>
             <View style={styles.header}></View>
             <View style={styles.searchContainer}>
                 <TextInput style={styles.searchbar} onChangeText={text => props.onSearch(text)} value={props.lable}/>
-                <Text> This is login maybe </Text>
+                <TouchableHighlight onPress={() => {setModalVisible(!modalVisible)}}>
+                    <Text>Login</Text>
+                </TouchableHighlight>
+            </View>
+            <View>
+                <TouchableHighlight style={styles.login} onPress={() => {if(props.loggedIn){setModalVisible2(!modalVisible2)}else{alert('Please login first')}}}>
+                    <Text style={styles.white}>Create post</Text>
+                </TouchableHighlight>
             </View>
             <View style={styles.container}>
                 {props.allPosts.map(content => <PostingBox key={content.id} onTouchable={props.onTouchable} switchScreen={() => props.navigation.navigate('posting')} infor={content} />)}
@@ -46,6 +87,27 @@ const styles = StyleSheet.create({
         backgroundColor: 'lightgray',
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    smallBlue:{
+        color: 'blue',
+        fontSize: 10,
+    },
+    white:{
+        color: 'white',
+    },
+    login:{
+        marginTop: 10,
+        borderRadius: 10,
+        padding: 5,
+        paddingLeft: 9,
+        paddingRight: 9,
+        backgroundColor: 'blue',
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 22,
     },
     container: {
         flex: 1,

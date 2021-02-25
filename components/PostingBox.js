@@ -9,7 +9,7 @@ const PostingBox = (props) => {
                 <Text>{props.infor.category}</Text>
                 <Text>{props.infor.location}</Text>
                 <Text>{props.infor.image}</Text>
-                <Text>{props.infor.price}</Text>
+                <Text>{props.infor.price}€</Text>
                 <Text>{props.infor.date}</Text>
                 <Text>{props.infor.delivery}</Text>
                 <Text>{props.infor.contact_information}</Text>

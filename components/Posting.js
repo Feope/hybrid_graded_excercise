@@ -21,6 +21,7 @@ export default function Posting(props) {
 const styles = StyleSheet.create({
     container:{
         flex: 1,
+        backgroundColor: 'lightgray',
         justifyContent: 'center',
         alignItems: 'center',
     }

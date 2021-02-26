@@ -73,7 +73,7 @@ import PostingBox from "./PostingBox";
                 </TouchableHighlight>
             </View>
             <View style={styles.container}>
-                {props.allPosts.map(content => <PostingBox key={content.id} onTouchable={props.onTouchable} switchScreen={() => props.navigation.navigate('posting')} infor={content} />)}
+                {props.allPosts.map(content => <PostingBox key={content.id} onTouchable={props.onTouchable} switchScreen={() => {props.navigation.navigate('posting'); props.onPosting(content.id)}} infor={content} />)}
                 <StatusBar style="auto" />
             </View>
         </View>    

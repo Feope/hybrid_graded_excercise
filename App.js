@@ -86,6 +86,11 @@ export default class App extends Component{
     this.setState({ contact_information: text })
   }
 
+  onPosting = (id) =>{
+    this.setState({selectedId: id})
+    console.log(id)
+  }
+
   register = () =>{
     let user = this.state.username;
     let pass = this.state.password;
@@ -100,19 +105,30 @@ export default class App extends Component{
     });
   }
 
+  loggedIn = (user) =>{
+    this.setState({loggedIn: user})
+  }
+
   login = () => {
     let user = this.state.username;
     let pass = this.state.password;
+    let success = false;
 
     axios.put(API_address + '/login', {
       Username: user,
       Password: pass
     })
-    .then(this.setState({loggedIn: user}))
+    .then(function (response){
+      success = true;
+    })
     .catch(function (error) {
       alert('Invalid Credentials');
       console.log(error);
     });
+
+    if(success = true){
+      this.loggedIn(user);
+    }
   }
 
   post = () => {
@@ -148,7 +164,53 @@ export default class App extends Component{
     this.refreshPage()
   }
 
-  emptyFile = () => {
+  update = () =>{
+    let id = this.state.selectedId;
+    let title = this.state.title;
+    let category = this.state.category;
+    let location = this.state.location;
+    let image = "string";
+    let price = this.state.price;
+    let date = this.state.date;
+    let delivery = this.state.delivery;
+    let contact_information = this.state.contact_information;
+
+    axios.put(API_address + '/posting/' + id, {
+      PostingInformation: {
+        id: id,
+        title: title,
+        category: category,
+        location: location,
+        image: image,
+        price: price,
+        date: date,
+        delivery: delivery,
+        contact_information: contact_information
+      }
+    })
+    .catch(function (error) {
+      alert('Invalid Credentials');
+      console.log(error);
+    });
+
+    this.emptyFile()
+    this.refreshPage()
+  }
+
+  deletePost = () =>{
+    let id = this.state.selectedId
+
+    axios.delete(API_address + '/posting/' + id,{
+    })
+    .catch(function (error) {
+      alert('Invalid Credentials');
+      console.log(error);
+    });
+
+    this.refreshPage();
+  }
+
+  emptyFile = () =>{
     this.setState({title: ''});
     this.setState({category: ''});
     this.setState({location: ''});
@@ -189,10 +251,13 @@ export default class App extends Component{
             onUsername={ this.onUsername } onPassword={ this.onPassword } onSearch={ this.onSearch } onTouchable={ this.onTouchable } login={ this.login } 
             register={ this.register } onTitle={ this.onTitle } onCategory={ this.onCategory } onLocation={ this.onLocation } onPrice={ this.onPrice }
             onDate={ this.onDate } onDelivery={ this.onDelivery } onContactInformation={ this.onContactInformation } emptyFile={ this.emptyFile }
-            post={ this.post } loggedIn={this.state.loggedIn} />}
+            post={ this.post } loggedIn={this.state.loggedIn} onPosting={ this.onPosting }/>}
           </Stack.Screen>
           <Stack.Screen name="posting" options={{ title: 'Posting', headerTintColor: 'blue', }} >
-            { props => <Posting {...props} data={ this.state.returnedPost }/>}
+            { props => <Posting {...props} data={ this.state.returnedPost } onTitle={ this.onTitle } onCategory={ this.onCategory }
+             onLocation={ this.onLocation } onPrice={ this.onPrice } onDate={ this.onDate } onDelivery={ this.onDelivery }
+             onContactInformation={ this.onContactInformation } emptyFile={ this.emptyFile } update={ this.update } onPosting={ this.onPosting }
+             deletePost={ this.deletePost } />}
           </Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>

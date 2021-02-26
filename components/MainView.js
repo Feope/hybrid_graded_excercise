@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { View, Text, StyleSheet, TextInput, TouchableHighlight, Modal, Alert, Button, TouchableWithoutFeedback } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableHighlight, Modal, Alert} from 'react-native';
 import PostingBox from "./PostingBox";
 
   const MainView = (props) => {
@@ -62,7 +62,7 @@ import PostingBox from "./PostingBox";
             </Modal>
             <View style={styles.header}></View>
             <View style={styles.searchContainer}>
-                <TextInput style={styles.searchbar} onChangeText={text => props.onSearch(text)} value={props.lable}/>
+                <TextInput style={styles.searchbar} onChangeText={text => {props.onSearch(text); props.onSearch(text); props.search(text)}} value={props.lable}/>
                 <TouchableHighlight onPress={() => {setModalVisible(!modalVisible)}}>
                     <Text>Login</Text>
                 </TouchableHighlight>

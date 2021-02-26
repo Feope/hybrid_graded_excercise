@@ -23,6 +23,7 @@ export default class App extends Component{
       clicked: false,
       returnedPost: [],
       allPosts: [],
+      displayPosts: [],
       username: 'test',
       password: 'test',
       loggedIn: '',
@@ -89,6 +90,26 @@ export default class App extends Component{
   onPosting = (id) =>{
     this.setState({selectedId: id})
     console.log(id)
+  }
+
+  search = (searchParam) =>{
+    let posts = this.state.allPosts;
+    let reArray = [];
+
+    console.log(searchParam)
+
+   for(const element of posts){
+     if(element.id == searchParam || element.category == searchParam || element.location == searchParam || element.date == searchParam){
+       reArray.push(element);
+     }
+   }
+   if(searchParam.length == 0){
+      this.componentDidMount();
+   }
+   else{
+      this.setState({ displayPosts: reArray })
+   }
+   console.log(reArray)
   }
 
   register = () =>{
@@ -224,6 +245,7 @@ export default class App extends Component{
     axios.get(API_address + '/posting')
     .then(res => {
       this.setState({allPosts: res.data})
+      this.setState({displayPosts: res.data})
     })
     .catch(function (error) {
     console.log(error);
@@ -234,6 +256,7 @@ export default class App extends Component{
     axios.get(API_address + '/posting')
     .then(res => {
       this.setState({allPosts: res.data})
+      this.setState({displayPosts: res.data})
     })
     .catch(function (error) {
     console.log(error);
@@ -247,11 +270,11 @@ export default class App extends Component{
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen name="mainView" options={{title: 'NoBay', headerTitleStyle:{ textAlign: "center"}, headerTintColor: 'blue' }}>
-            { props => <MainView {...props} lable={ this.state.lable } allPosts={ this.state.allPosts } username={ this.state.username } password={ this.state.password } 
+            { props => <MainView {...props} lable={ this.state.lable } allPosts={ this.state.displayPosts } username={ this.state.username } password={ this.state.password } 
             onUsername={ this.onUsername } onPassword={ this.onPassword } onSearch={ this.onSearch } onTouchable={ this.onTouchable } login={ this.login } 
             register={ this.register } onTitle={ this.onTitle } onCategory={ this.onCategory } onLocation={ this.onLocation } onPrice={ this.onPrice }
             onDate={ this.onDate } onDelivery={ this.onDelivery } onContactInformation={ this.onContactInformation } emptyFile={ this.emptyFile }
-            post={ this.post } loggedIn={this.state.loggedIn} onPosting={ this.onPosting }/>}
+            post={ this.post } loggedIn={this.state.loggedIn} onPosting={ this.onPosting } search={ this.search }/>}
           </Stack.Screen>
           <Stack.Screen name="posting" options={{ title: 'Posting', headerTintColor: 'blue', }} >
             { props => <Posting {...props} data={ this.state.returnedPost } onTitle={ this.onTitle } onCategory={ this.onCategory }

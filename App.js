@@ -11,7 +11,7 @@ const { v4: uuidv4 } = require('uuid');
 
 enableScreens();
 const Stack = createStackNavigator();
-const API_address = 'http://localhost:3000';
+const API_address = 'https://graded-interface-api.herokuapp.com';
 
 export default class App extends Component{
   constructor(props)
@@ -24,8 +24,8 @@ export default class App extends Component{
       returnedPost: [],
       allPosts: [],
       displayPosts: [],
-      username: 'test',
-      password: 'test',
+      username: 'Username',
+      password: 'Password',
       loggedIn: '',
       title: '',
       category: '',
